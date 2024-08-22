@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Upload</title>
+</head>
+<body>
+    <h1>Video Upload</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="video" accept="video/*">
+        <button type="submit">Upload Video</button>
+    </form>
+    <div id="upload-status"></div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const video = document.querySelector('input[type="file"]').files[0];
+            const formData = new FormData();
+            formData.append('video', video);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then((response) => response.text())
+            .then((message) => {
+                document.getElementById('upload-status').innerHTML = message;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>
